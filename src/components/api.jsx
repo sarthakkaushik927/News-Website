@@ -3,7 +3,7 @@
  * This file handles all data fetching for the News Website.
  */
 
-const API_KEY = '79da0ed268ed4145ab0e8967b4c6253b';
+const API_KEY = '95eac2ab9f574d8389906ee1bb844a42';
 const NEWS_URL = `https://newsapi.org/v2/everything?q=tesla&sortBy=publishedAt&apiKey=${API_KEY}`;
 
 /**
