@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/*.js": {
+      "runtime": "vercel-php@0.6.0" 
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/news",
+      "destination": "/api/news.js"
+    }
+  ]
+}

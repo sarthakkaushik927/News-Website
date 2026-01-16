@@ -1,6 +1,7 @@
+const G_API_KEY = 'cfb24d7a637da32825b1ac9f487e4519';
+
 const transformNewsData = (articles) => {
   if (!articles || !Array.isArray(articles) || articles.length === 0) return null;
-
   const mapArticle = (a, index) => ({
     id: index,
     title: a.title || "No Title",
@@ -21,14 +22,26 @@ const transformNewsData = (articles) => {
 };
 
 export const fetchAllNews = async (category = "general") => {
+  const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  
+  // Choose the URL based on environment
+  const url = isLocal 
+    ? `https://gnews.io/api/v4/top-headlines?category=${category}&lang=en&country=us&max=10&apikey=${G_API_KEY}`
+    : `/api/news?category=${category}`;
+
   try {
-    // CRITICAL CHANGE: We call our internal /api/news route
-    // This works on both Localhost and Vercel automatically
-    const response = await fetch(`/api/news?category=${category}`);
+    const response = await fetch(url);
+    
+    // Check if the response is actually JSON
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const text = await response.text();
+      console.error("Received non-JSON response:", text);
+      throw new Error("Server returned an invalid response. Check if /api/news.js is configured correctly.");
+    }
+
     const data = await response.json();
-
     if (data.errors) throw new Error(data.errors[0]);
-
     return transformNewsData(data.articles);
   } catch (error) {
     console.error("Fetch failed:", error);
