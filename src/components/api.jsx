@@ -1,4 +1,4 @@
-const G_API_KEY = 'cfb24d7a637da32825b1ac9f487e4519'; 
+const G_API_KEY = import.meta.env.VITE_APP_API_URL; 
 
 const transformNewsData = (articles) => {
   // CRITICAL: Check if articles exist before transforming
